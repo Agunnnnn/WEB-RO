@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import {
   DndContext,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -18,13 +19,18 @@ import "./styles.css";
 export default function App() {
   const { isAdmin } = useAdmin();
   const [page, setPage] = useState("main"); // 'main' | 'login'
+  const [rosterOpen, setRosterOpen] = useState(false);
   const { members, addMember, updateMember, deleteMember, moveMember } =
     useMembers();
   const { teams, addTeam, renameTeam, deleteTeam } = useTeams();
 
+  // Support both mouse and touch for drag-and-drop
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 6 },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 200, tolerance: 8 },
     }),
   );
 
@@ -84,7 +90,7 @@ export default function App() {
           </div>
           <div className="stats">
             <b>{members.length}</b> anggota &nbsp;·&nbsp; <b>{teams.length}</b>{" "}
-            tim &nbsp;·&nbsp; <b>{unassignedCount}</b> belum masuk party
+            tim &nbsp;·&nbsp; <b>{unassignedCount}</b> belum party
           </div>
           <div className="actions">
             {isAdmin && (
@@ -94,14 +100,14 @@ export default function App() {
                   className="btn btn-gold"
                   onClick={() => handleAddTeam("main")}
                 >
-                  + Tim Main Battle
+                  + Main
                 </button>
                 <button
                   type="button"
                   className="btn"
                   onClick={() => handleAddTeam("secondary")}
                 >
-                  + Tim Secondary Battle
+                  + Secondary
                 </button>
               </>
             )}
@@ -110,12 +116,42 @@ export default function App() {
         </header>
 
         <main className="layout">
-          <Roster
-            members={members}
-            addMember={addMember}
-            updateMember={updateMember}
-            deleteMember={deleteMember}
-          />
+          {/* Roster: collapsible on mobile, always shown on desktop */}
+          <div className="roster-panel">
+            {/* Mobile toggle button */}
+            <button
+              type="button"
+              className="roster-toggle"
+              onClick={() => setRosterOpen((v) => !v)}
+              aria-expanded={rosterOpen}
+            >
+              <span className="roster-toggle-title">📋 Roster</span>
+              <span className="roster-toggle-meta">
+                {unassignedCount} belum masuk party
+              </span>
+              <span
+                className={`roster-toggle-chevron ${rosterOpen ? "open" : ""}`}
+              >
+                ▼
+              </span>
+            </button>
+
+            {/* Desktop heading — shown via CSS on ≥960px */}
+            <h2>Roster</h2>
+
+            {/* Body — collapses on mobile */}
+            <div
+              className="roster-body"
+              style={{ display: rosterOpen ? "block" : undefined }}
+            >
+              <Roster
+                members={members}
+                addMember={addMember}
+                updateMember={updateMember}
+                deleteMember={deleteMember}
+              />
+            </div>
+          </div>
 
           <section className="teams-panel">
             <div className="teams-section">
@@ -123,8 +159,8 @@ export default function App() {
               <div className="teams-grid">
                 {mainTeams.length === 0 && (
                   <div className="section-empty">
-                    Belum ada Tim Main Battle. Klik &quot;+ Tim Main
-                    Battle&quot; buat mulai.
+                    Belum ada Tim Main Battle. Klik &quot;+ Main&quot; buat
+                    mulai.
                   </div>
                 )}
                 {mainTeams.map((t) => (
@@ -147,8 +183,8 @@ export default function App() {
               <div className="teams-grid">
                 {secondaryTeams.length === 0 && (
                   <div className="section-empty">
-                    Belum ada Tim Secondary Battle. Klik &quot;+ Tim Secondary
-                    Battle&quot; buat mulai.
+                    Belum ada Tim Secondary Battle. Klik &quot;+ Secondary&quot;
+                    buat mulai.
                   </div>
                 )}
                 {secondaryTeams.map((t) => (

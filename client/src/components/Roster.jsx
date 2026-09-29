@@ -37,17 +37,16 @@ export default function Roster({ members, addMember, updateMember, deleteMember 
   }
 
   return (
-    <section className="roster-panel">
-      <h2>Roster</h2>
+    <>
       {isAdmin && (
-      <form className="add-form" onSubmit={handleSubmit}>
-        <input placeholder="Nickname" maxLength={24} value={nickname} onChange={(e) => setNickname(e.target.value)} required />
-        <input type="number" placeholder="Gear Score" min="0" value={gear} onChange={(e) => setGear(e.target.value)} required />
-        <select value={jobId} onChange={(e) => setJobId(e.target.value)}>
-          {JOBS.map((j) => <option key={j.id} value={j.id}>{j.emoji} {j.name}</option>)}
-        </select>
-        <button type="submit" className="btn btn-gold">Tambah Anggota</button>
-      </form>
+        <form className="add-form" onSubmit={handleSubmit}>
+          <input placeholder="Nickname" maxLength={24} value={nickname} onChange={(e) => setNickname(e.target.value)} required />
+          <input type="number" placeholder="Gear Score" min="0" value={gear} onChange={(e) => setGear(e.target.value)} required />
+          <select value={jobId} onChange={(e) => setJobId(e.target.value)}>
+            {JOBS.map((j) => <option key={j.id} value={j.id}>{j.emoji} {j.name}</option>)}
+          </select>
+          <button type="submit" className="btn btn-gold">Tambah Anggota</button>
+        </form>
       )}
 
       <input className="search" placeholder="Cari nickname..." value={search} onChange={(e) => setSearch(e.target.value)} />
@@ -59,7 +58,9 @@ export default function Roster({ members, addMember, updateMember, deleteMember 
       <div ref={setNodeRef} className={`chip-list drop-zone ${isOver ? 'drag-over' : ''}`}>
         {unassigned.length === 0 && (
           <div className="empty-hint">
-            {members.length === 0 ? (isAdmin ? 'Belum ada anggota. Tambahin lewat form di atas.' : 'Belum ada anggota.') : 'Semua anggota sudah masuk party.'}
+            {members.length === 0
+              ? (isAdmin ? 'Belum ada anggota. Tambahin lewat form di atas.' : 'Belum ada anggota.')
+              : 'Semua anggota sudah masuk party.'}
           </div>
         )}
         {unassigned.map((m) => (
@@ -80,6 +81,6 @@ export default function Roster({ members, addMember, updateMember, deleteMember 
           )
         ))}
       </div>
-    </section>
+    </>
   );
 }
