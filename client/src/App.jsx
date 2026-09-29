@@ -79,6 +79,22 @@ export default function App() {
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+      {/* Animated grid background */}
+      <div className="app-grid-bg" aria-hidden="true" />
+
+      {/* Floating background particles — same as login page */}
+      <div className="app-particles" aria-hidden="true">
+        <div className="particle p1" />
+        <div className="particle p2" />
+        <div className="particle p3" />
+        <div className="particle p4" />
+        <div className="particle p5" />
+        <div className="particle p6" />
+        <div className="particle p7" />
+        <div className="particle p8" />
+        <div className="particle p9" />
+      </div>
+
       <div className="app">
         <header className="topbar">
           <div className="brand">
@@ -88,10 +104,25 @@ export default function App() {
               <p className="brand-sub">Web Resmi Guild Arcana</p>
             </div>
           </div>
-          <div className="stats">
-            <b>{members.length}</b> anggota &nbsp;·&nbsp; <b>{teams.length}</b>{" "}
-            tim &nbsp;·&nbsp; <b>{unassignedCount}</b> belum party
+
+          {/* Premium stat pills */}
+          <div className="stats" aria-label="Statistik guild">
+            <div className="stat-pills">
+              <span className="stat-pill gold-pill">
+                <span className="stat-pill-icon">👥</span>
+                <b>{members.length}</b> anggota
+              </span>
+              <span className="stat-pill">
+                <span className="stat-pill-icon">🏰</span>
+                <b>{teams.length}</b> tim
+              </span>
+              <span className="stat-pill">
+                <span className="stat-pill-icon">⏳</span>
+                <b>{unassignedCount}</b> bebas
+              </span>
+            </div>
           </div>
+
           <div className="actions">
             {isAdmin && (
               <>
@@ -127,7 +158,7 @@ export default function App() {
             >
               <span className="roster-toggle-title">📋 Roster</span>
               <span className="roster-toggle-meta">
-                {unassignedCount} belum masuk party
+                {unassignedCount} belum party
               </span>
               <span
                 className={`roster-toggle-chevron ${rosterOpen ? "open" : ""}`}
@@ -137,7 +168,7 @@ export default function App() {
             </button>
 
             {/* Desktop heading — shown via CSS on ≥960px */}
-            <h2>Roster</h2>
+            <h2>⚔️ Roster Guild</h2>
 
             {/* Body — collapses on mobile */}
             <div
@@ -183,8 +214,8 @@ export default function App() {
               <div className="teams-grid">
                 {secondaryTeams.length === 0 && (
                   <div className="section-empty">
-                    Belum ada Tim Secondary Battle. Klik &quot;+ Secondary&quot;
-                    buat mulai.
+                    Belum ada Tim Secondary Battle. Klik &quot;+
+                    Secondary&quot; buat mulai.
                   </div>
                 )}
                 {secondaryTeams.map((t) => (
