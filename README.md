@@ -1,4 +1,4 @@
-# Guild War Manager (final)
+# GUILD WAR
 
 Dua folder, dua-duanya berdiri sendiri:
 
@@ -8,6 +8,7 @@ client/   Web React (Vite)
 ```
 
 ## Server
+
 ```bash
 cd server
 npm install
@@ -15,9 +16,11 @@ cp .env.example .env      # isi SUPABASE_URL & SUPABASE_SERVICE_ROLE_KEY
 npm run create-admin      # sekali aja, bikin akun admin
 npm run dev               # http://localhost:4000
 ```
+
 Kalau tabel belum dibuat: jalankan `server/src/db/schema.sql` di Supabase SQL Editor.
 
 ## Client
+
 ```bash
 cd client
 npm install
