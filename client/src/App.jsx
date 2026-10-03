@@ -6,6 +6,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import AssignTeamModal from "./components/AssignTeamModal";
 import { useMembers } from "./hooks/useMembers";
 import { useTeams } from "./hooks/useTeams";
 import { useAdmin } from "./context/AdminContext";
@@ -23,6 +24,7 @@ export default function App() {
   const { members, addMember, updateMember, deleteMember, moveMember } =
     useMembers();
   const { teams, addTeam, renameTeam, deleteTeam } = useTeams();
+  const [assigningMember, setAssigningMember] = useState(null);
 
   // Support both mouse and touch for drag-and-drop
   const sensors = useSensors(
@@ -180,6 +182,7 @@ export default function App() {
                 addMember={addMember}
                 updateMember={updateMember}
                 deleteMember={deleteMember}
+                onAssign={setAssigningMember}
               />
             </div>
           </div>
@@ -214,8 +217,8 @@ export default function App() {
               <div className="teams-grid">
                 {secondaryTeams.length === 0 && (
                   <div className="section-empty">
-                    Belum ada Tim Secondary Battle. Klik &quot;+
-                    Secondary&quot; buat mulai.
+                    Belum ada Tim Secondary Battle. Klik &quot;+ Secondary&quot;
+                    buat mulai.
                   </div>
                 )}
                 {secondaryTeams.map((t) => (
@@ -236,6 +239,20 @@ export default function App() {
 
       {/* Halaman login — overlay full-screen */}
       {page === "login" && <LoginPage onBack={() => setPage("main")} />}
+
+      {/* Modal pilih tim/party buat assign member tanpa drag */}
+      {assigningMember && (
+        <AssignTeamModal
+          member={assigningMember}
+          teams={teams}
+          members={members}
+          onClose={() => setAssigningMember(null)}
+          onAssign={(pid) => {
+            moveMember(assigningMember.id, pid);
+            setAssigningMember(null);
+          }}
+        />
+      )}
     </DndContext>
   );
 }

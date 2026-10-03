@@ -1702,20 +1702,113 @@ h3 {
   }
 }
 
+/* ============================================================
+   ASSIGN TO TEAM MODAL
+   ============================================================ */
+.assign-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(5, 7, 12, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+}
+.assign-modal {
+  width: 100%;
+  max-width: 480px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: var(--panel-solid);
+  border: 1px solid var(--border);
+  border-top: 2px solid rgba(227, 179, 65, 0.4);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 16px;
+}
+.assign-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.assign-modal-head h3 {
+  font-size: 0.95rem;
+  color: var(--gold);
+}
+.assign-empty {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 20px;
+}
+.assign-team-group {
+  margin-bottom: 16px;
+}
+.assign-team-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.assign-team-name.secondary {
+  color: var(--blue);
+}
+.assign-party-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 6px;
+}
+.assign-party-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+  color: var(--text);
+  font-size: 0.72rem;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.assign-party-btn:not(.full):hover {
+  background: rgba(227, 179, 65, 0.1);
+  border-color: rgba(227, 179, 65, 0.3);
+}
+.assign-party-btn.full {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.assign-party-count {
+  font-size: 0.64rem;
+  color: var(--text-dim);
+}
+
+@media (min-width: 640px) {
+  .assign-overlay {
+    align-items: center;
+  }
+  .assign-modal {
+    border-radius: var(--radius-lg);
+    border-top: 1px solid var(--border);
+  }
+}
+
+/* ============================================================
+   MOBILE PERFORMANCE FIXES
+   ============================================================ */
 @media (max-width: 760px) {
   .app-particles,
   .app-grid-bg {
     display: none;
   }
-
-  /* Blob background paling berat: blur 100px + animasi jalan terus */
   .app::before,
   .app::after {
     display: none;
   }
-
-  /* backdrop-filter nempel di tiap chip (bisa 30+ elemen sekaligus),
-     paling kerasa beratnya pas scroll roster di HP */
   .chip,
   .btn {
     backdrop-filter: none;
