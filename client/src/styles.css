@@ -804,6 +804,7 @@ h3 {
 
 .chip.is-readonly {
   cursor: default;
+  touch-action: pan-y;
 }
 .chip.is-readonly:hover {
   transform: none;
